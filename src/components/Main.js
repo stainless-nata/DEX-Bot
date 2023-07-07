@@ -21,9 +21,10 @@ export default function Main() {
             <TabContext value={value}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <TabList onChange={handleChange} aria-label="lab API tabs example">
-                    <Tab label="Item One" value="1" />
-                    <Tab label="Item Two" value="2" />
-                    <Tab label="Item Three" value="3" />
+                    <Tab label="Buy/Swap" value="1" />
+                    <Tab label="Trades" value="2" />
+                    <Tab label="History" value="3" />
+                    <Tab label="Mempool" value="4" />
                 </TabList>
                 </Box>
                 <TabPanel value="1">
@@ -33,6 +34,9 @@ export default function Main() {
                     
                 </TabPanel>
                 <TabPanel value="3">
+                    
+                </TabPanel>
+                <TabPanel value="4">
                     
                 </TabPanel>
             </TabContext>

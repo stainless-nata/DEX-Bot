@@ -1,9 +1,8 @@
 .main-container {
-    background-color: #00000027;
+    background-color: #d3d3d3;
+    border: 1px solid #3700ff;
     width: 70%;
     margin-left: 15%;
-}
-
-.swap-container {
-    
+    margin-top: 5vh;
+    height: 90vh;
 }
