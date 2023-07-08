@@ -16,8 +16,8 @@ export default function SwapTab() {
     };
 
     return (
-        <div className='text-left'>
-            <p className="text-3xl font-bold">Buy/Swap</p>
+        <div>
+            <p className="text-3xl font-bold text-left">Buy/Swap</p>
             <Form
                 name="basic"
                 labelCol={{
@@ -33,7 +33,7 @@ export default function SwapTab() {
                 onFinishFailed={onFinishFailed}
                 autoComplete="off"
             >
-                <div className="grid grid-cols-2 gap-4 w-full">
+                <div className="grid grid-cols-2 gap-4">
                     <div>
                         <Form.Item
                         label="Contract Pair:"

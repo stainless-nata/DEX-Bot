@@ -12,7 +12,7 @@ import TradesTab from './TradesTab';
 import HistoryTab from './HistoryTab';
 import MempoolTab from './MempoolTab';
 
-export default function Main() {
+export default function MainPage() {
   const [value, setValue] = React.useState('1');
 
   const handleChange = (event, newValue) => {
