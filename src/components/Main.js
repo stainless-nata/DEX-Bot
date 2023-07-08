@@ -10,6 +10,7 @@ import SwapTab from './SwapTab';
 import MainTab from './MainTab';
 import TradesTab from './TradesTab';
 import HistoryTab from './HistoryTab';
+import MempoolTab from './MempoolTab';
 
 export default function Main() {
   const [value, setValue] = React.useState('1');
@@ -44,7 +45,7 @@ export default function Main() {
                     <HistoryTab />
                 </TabPanel>
                 <TabPanel value="5">
-                    
+                    <MempoolTab />
                 </TabPanel>
             </TabContext>
         </Box>

@@ -97,7 +97,8 @@ const rowSelection = {
 export default function TradesTab() {
     
     return (
-      <div>
+      <div className='text-left'>
+        <p className="text-3xl font-bold">Trades</p>
         <Row>
             <Button type='primary' size='large' className='bg-blue-600 m-5' onClick={() => {
                 

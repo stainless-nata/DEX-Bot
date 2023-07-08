@@ -16,8 +16,8 @@ export default function SwapTab() {
     };
 
     return (
-        <div>
-            <p className="text-2xl font-bold float-left">Buy/Swap</p>
+        <div className='text-left'>
+            <p className="text-3xl font-bold">Buy/Swap</p>
             <Form
                 name="basic"
                 labelCol={{

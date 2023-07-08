@@ -117,7 +117,8 @@ const rowSelection = {
 export default function HistoryTab() {
     
     return (
-      <div>
+      <div className='text-left'>
+        <p className="text-3xl font-bold">History</p>
         <Row>
             <Col span={5} className='m-5'>
                 <p className='text-lg'>Filter by Token Name/Sym: </p>
