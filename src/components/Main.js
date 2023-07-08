@@ -9,6 +9,7 @@ import '../css/Main.css';
 import SwapTab from './SwapTab';
 import MainTab from './MainTab';
 import TradesTab from './TradesTab';
+import HistoryTab from './HistoryTab';
 
 export default function Main() {
   const [value, setValue] = React.useState('1');
@@ -40,7 +41,7 @@ export default function Main() {
                     <TradesTab />
                 </TabPanel>
                 <TabPanel value="4">
-                    
+                    <HistoryTab />
                 </TabPanel>
                 <TabPanel value="5">
                     

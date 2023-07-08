@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Form, Input, Button, Row, Col } from 'antd'
-import { DownloadOutlined } from '@ant-design/icons';
 
 export default function MainTab() {
 
@@ -20,7 +19,7 @@ export default function MainTab() {
                 autoComplete="off"
             >
                 <p className='text-2xl font-bold'>Regular Trades</p>
-                <div className='flex'>
+                <Row>
                     <Col span={6} className='m-5'>
                         <Form.Item
                         label="Base Fee Plus"
@@ -64,7 +63,7 @@ export default function MainTab() {
                         </Form.Item>
                     </Col>
                     <Button type="primary" shape='round' className='m-5 bg-blue-600' >Save</Button>
-                </div>
+                </Row>
             </Form>
             <Form
                 name="basic"
