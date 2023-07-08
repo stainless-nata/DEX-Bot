@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Checkbox, Form, Input, Col, Row } from 'antd';
 
-export default function Swap() {
+export default function SwapTab() {
 
     const [basePrice, setBasePrice] = useState(0);
     const [tokenPrice, setTokenPrice] = useState(0);

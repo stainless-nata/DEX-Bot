@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Input, Button } from 'antd'
+import { Form, Input, Button, Row, Col } from 'antd'
 import { DownloadOutlined } from '@ant-design/icons';
 
 export default function MainTab() {
@@ -21,45 +21,48 @@ export default function MainTab() {
             >
                 <p className='text-2xl font-bold'>Regular Trades</p>
                 <div className='flex'>
-                    <Form.Item
-                    label="Base Fee Plus"
-                    name="baseFeePlus"
-                    rules={[
-                        {
-                        required: true,
-                        message: 'Please fill info!',
-                        },
-                    ]}
-                    className='m-5'
-                    >
-                        <Input />
-                    </Form.Item>
-                    <Form.Item
-                    label="Miner Tip"
-                    name="minerTip"
-                    rules={[
-                        {
-                        required: true,
-                        message: 'Please fill info!',
-                        },
-                    ]}
-                    className='m-5'
-                    >
-                        <Input />
-                    </Form.Item>
-                    <Form.Item
-                    label="Gas Limit"
-                    name="gasLimit"
-                    rules={[
-                        {
-                        required: true,
-                        message: 'Please fill info!',
-                        },
-                    ]}
-                    className='m-5'
-                    >
-                        <Input />
-                    </Form.Item>
+                    <Col span={6} className='m-5'>
+                        <Form.Item
+                        label="Base Fee Plus"
+                        name="baseFeePlus"
+                        rules={[
+                            {
+                            required: true,
+                            message: 'Please fill info!',
+                            },
+                        ]}
+                        >
+                            <Input />
+                        </Form.Item>
+                    </Col>
+                    <Col span={6} className='m-5'>
+                        <Form.Item
+                        label="Miner Tip"
+                        name="minerTip"
+                        rules={[
+                            {
+                            required: true,
+                            message: 'Please fill info!',
+                            },
+                        ]}
+                        >
+                            <Input />
+                        </Form.Item>
+                    </Col>
+                    <Col span={6} className='m-5'>
+                        <Form.Item
+                        label="Gas Limit"
+                        name="gasLimit"
+                        rules={[
+                            {
+                            required: true,
+                            message: 'Please fill info!',
+                            },
+                        ]}
+                        >
+                            <Input />
+                        </Form.Item>
+                    </Col>
                     <Button type="primary" shape='round' className='m-5 bg-blue-600' >Save</Button>
                 </div>
             </Form>
@@ -77,48 +80,51 @@ export default function MainTab() {
                 autoComplete="off"
             >
                 <p className='text-2xl font-bold'>Front-Run Trades (FR)</p>
-                <div className='flex'>
-                    <Form.Item
-                    label="FR Base Fee Plus"
-                    name="baseFeePlusFR"
-                    rules={[
-                        {
-                        required: true,
-                        message: 'Please fill info!',
-                        },
-                    ]}
-                    className='m-5'
-                    >
-                        <Input />
-                    </Form.Item>
-                    <Form.Item
-                    label="FR Miner Tip"
-                    name="minerTipFR"
-                    rules={[
-                        {
-                        required: true,
-                        message: 'Please fill info!',
-                        },
-                    ]}
-                    className='m-5'
-                    >
-                        <Input />
-                    </Form.Item>
-                    <Form.Item
-                    label="FR Gas Limit"
-                    name="gasLimitFR"
-                    rules={[
-                        {
-                        required: true,
-                        message: 'Please fill info!',
-                        },
-                    ]}
-                    className='m-5'
-                    >
-                        <Input />
-                    </Form.Item>
+                <Row>
+                    <Col span={6} className='m-5'>
+                        <Form.Item
+                        label="FR Base Fee Plus"
+                        name="baseFeePlusFR"
+                        rules={[
+                            {
+                            required: true,
+                            message: 'Please fill info!',
+                            },
+                        ]}
+                        >
+                            <Input />
+                        </Form.Item>
+                    </Col>
+                    <Col span={6} className='m-5'>
+                        <Form.Item
+                        label="FR Miner Tip"
+                        name="minerTipFR"
+                        rules={[
+                            {
+                            required: true,
+                            message: 'Please fill info!',
+                            },
+                        ]}
+                        >
+                            <Input />
+                        </Form.Item>
+                    </Col>
+                    <Col span={6} className='m-5'>
+                        <Form.Item
+                        label="FR Gas Limit"
+                        name="gasLimitFR"
+                        rules={[
+                            {
+                            required: true,
+                            message: 'Please fill info!',
+                            },
+                        ]}
+                        >
+                            <Input />
+                        </Form.Item>
+                    </Col>
                     <Button type="primary" shape='round' className='m-5 bg-blue-600' >Save</Button>
-                </div>
+                </Row>
             </Form>
         </div>
     )

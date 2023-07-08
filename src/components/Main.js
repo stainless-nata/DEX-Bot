@@ -6,8 +6,9 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 
 import '../css/Main.css';
-import Swap from './Swap';
+import SwapTab from './SwapTab';
 import MainTab from './MainTab';
+import TradesTab from './TradesTab';
 
 export default function Main() {
   const [value, setValue] = React.useState('1');
@@ -33,10 +34,10 @@ export default function Main() {
                     <MainTab />
                 </TabPanel>
                 <TabPanel value="2">
-                    <Swap />
+                    <SwapTab />
                 </TabPanel>
                 <TabPanel value="3">
-                    
+                    <TradesTab />
                 </TabPanel>
                 <TabPanel value="4">
                     
