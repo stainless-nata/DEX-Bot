@@ -12,6 +12,7 @@
     "@testing-library/user-event": "^13.5.0",
     "antd": "^5.6.4",
     "axios": "^1.4.0",
+    "bnc-sdk": "^4.6.7",
     "cors": "^2.8.5",
     "fs": "^0.0.1-security",
     "react": "^18.2.0",
