@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Form, Input, Button, Row, Col } from 'antd'
+import { Form, Input, Button, Row, Col, notification } from 'antd'
+import axios from 'axios'
 
 export default function MainTab() {
 
@@ -62,7 +63,19 @@ export default function MainTab() {
                             <Input />
                         </Form.Item>
                     </Col>
-                    <Button type="primary" shape='round' className='m-5 bg-blue-600' >Save</Button>
+                    <Button type="primary" shape='round' className='m-5 bg-blue-600' onClick={() => {
+                        axios.post(`http://${process.env.REACT_APP_SERVER_URL}/set_regular_trades`, {
+                            baseFeePlus:  100,
+                            minerTip: 10,
+                            gasLimit: 50,
+                        })
+                        .then((res) => {
+                            notification.success({
+                                message: 'Success!',
+                                placement: 'top',
+                              });
+                        });
+                    }}>Save</Button>
                 </Row>
             </Form>
             <Form
@@ -122,7 +135,19 @@ export default function MainTab() {
                             <Input />
                         </Form.Item>
                     </Col>
-                    <Button type="primary" shape='round' className='m-5 bg-blue-600' >Save</Button>
+                    <Button type="primary" shape='round' className='m-5 bg-blue-600' onClick={() => {
+                        axios.post(`http://localhost:8008/set_frontrun_trades`, {
+                            frBaseFeePlus:  100,
+                            frMinerTip: 10,
+                            frGasLimit: 50,
+                        })
+                        .then((res) => {
+                            notification.success({
+                                message: 'Success!',
+                                placement: 'top',
+                              });
+                        });
+                    }}>Save</Button>
                 </Row>
             </Form>
         </div>
