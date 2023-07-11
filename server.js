@@ -3,6 +3,7 @@ const cors = require('cors')
 var bodyParser = require('body-parser')
 
 const maintab = require('./routes/api/maintab');
+const mempooltab = require('./routes/api/mempooltab');
 
 const app = express();
 
@@ -11,6 +12,7 @@ app.use(cors())
 app.options("*", cors());
 
 app.use('/maintab', maintab);
+app.use('/mempooltab', mempooltab);
 
 
 const port = process.env.PORT || 8008;

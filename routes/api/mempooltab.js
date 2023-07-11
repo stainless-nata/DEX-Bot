@@ -12,12 +12,12 @@ const saveConfig = () => {
   })
 }
 
-router.post('/set_regular_trades', (req, res) => {
-    console.log("Set Regular Trades environments")
+router.post('/set', (req, res) => {
+    console.log("Set Mempool environments")
 
-    config.baseFeePlus = req.body.baseFeePlus
-    config.minerTip = req.body.minerTip
-    config.gasLimit = req.body.gasLimit
+    config.pairAddr = req.body.pairAddr
+    config.filterAmount = req.body.filterAmount
+    config.filter = req.body.action
 
     saveConfig()
     res.json('Success');
