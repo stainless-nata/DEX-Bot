@@ -3,6 +3,35 @@ import { Form, Input, Button, Row, Col, notification } from 'antd'
 import axios from 'axios'
 
 export default function MainTab() {
+    const onFinishRegular = (values) => {
+      axios.post(`http://${process.env.REACT_APP_BASE_URL}:${process.env.REACT_APP_PORT}/maintab/set_regular_trades`, {
+          baseFeePlus:  values.baseFeePlus,
+          minerTip: values.minerTip,
+          gasLimit: values.gasLimit,
+      })
+      .then((res) => {
+          notification.success({
+              message: 'Success!',
+              placement: 'top',
+            });
+      });
+    };
+    const onFinishFrontend = (values) => {
+        axios.post(`http://${process.env.REACT_APP_BASE_URL}:${process.env.REACT_APP_PORT}/maintab/set_frontrun_trades`, {
+            baseFeePlusFR:  values.baseFeePlusFR,
+            minerTipFR: values.minerTipFR,
+            gasLimitFR: values.gasLimitFR,
+        })
+        .then((res) => {
+            notification.success({
+                message: 'Success!',
+                placement: 'top',
+              });
+        });
+    }
+    const onFinishFailed = (errorInfo) => {
+      console.log('Failed:', errorInfo);
+    };
 
     return (
         <div className='text-left'>
@@ -17,6 +46,8 @@ export default function MainTab() {
                 initialValues={{
                 remember: true,
                 }}
+                onFinish={onFinishRegular}
+                onFinishFailed={onFinishFailed}
                 autoComplete="off"
             >
                 <p className='text-2xl font-bold'>Regular Trades</p>
@@ -63,19 +94,7 @@ export default function MainTab() {
                             <Input />
                         </Form.Item>
                     </Col>
-                    <Button type="primary" shape='round' className='m-5 bg-blue-600' onClick={() => {
-                        axios.post(`http://${process.env.REACT_APP_SERVER_URL}/set_regular_trades`, {
-                            baseFeePlus:  100,
-                            minerTip: 10,
-                            gasLimit: 50,
-                        })
-                        .then((res) => {
-                            notification.success({
-                                message: 'Success!',
-                                placement: 'top',
-                              });
-                        });
-                    }}>Save</Button>
+                    <Button type="primary" htmlType='submit' shape='round' className='m-5 bg-blue-600'>Save</Button>
                 </Row>
             </Form>
             <Form
@@ -89,6 +108,8 @@ export default function MainTab() {
                 initialValues={{
                 remember: true,
                 }}
+                onFinish={onFinishFrontend}
+                onFinishFailed={onFinishFailed}
                 autoComplete="off"
             >
                 <p className='text-2xl font-bold'>Front-Run Trades (FR)</p>
@@ -135,19 +156,7 @@ export default function MainTab() {
                             <Input />
                         </Form.Item>
                     </Col>
-                    <Button type="primary" shape='round' className='m-5 bg-blue-600' onClick={() => {
-                        axios.post(`http://localhost:8008/set_frontrun_trades`, {
-                            frBaseFeePlus:  100,
-                            frMinerTip: 10,
-                            frGasLimit: 50,
-                        })
-                        .then((res) => {
-                            notification.success({
-                                message: 'Success!',
-                                placement: 'top',
-                              });
-                        });
-                    }}>Save</Button>
+                    <Button type="primary" htmlType='submit' shape='round' className='m-5 bg-blue-600'>Save</Button>
                 </Row>
             </Form>
         </div>
