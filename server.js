@@ -3,7 +3,7 @@ const cors = require('cors')
 var bodyParser = require('body-parser')
 const BlocknativeSDK = require('bnc-sdk')
 const WebSocket = require('ws')
-const chalk = require('chalk')
+// const chalk = require('chalk')
 const fs = require('fs')
 require('dotenv').config();
 
@@ -39,7 +39,7 @@ async function handleTransactionEvent(transaction) {
     let tx = transaction.transaction;
     console.log(tx.hash);
 }
-  
+
 const scanMempool = async () => {
     const blocknative = new BlocknativeSDK({
         dappId: process.env.BLOCKNATIVE_KEY,
@@ -48,14 +48,12 @@ const scanMempool = async () => {
         ws: WebSocket,
         onerror: (error) => {console.log(error)}
     })
-    console.log(
-        chalk.red(`\nMempool Scanner Started ... `),
-    )
+    console.log(`\nMempool Scanner Started ... `)
     const configuration = JSON.parse(fs.readFileSync('configuration.json', 'utf-8'))
     sdkSetup(blocknative, configuration)
 }
 
-// scanMempool()
+scanMempool()
 
 const port = process.env.PORT || 8008;
 app.listen(port, () => console.log(`Server running on port ${port}`));
