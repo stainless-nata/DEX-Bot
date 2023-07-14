@@ -1,21 +1,23 @@
+const http = require('http')
 const express = require('express');
-const app = express();
-const expressWs = require("express-ws")(app);
 const cors = require('cors')
 var bodyParser = require('body-parser')
 const BlocknativeSDK = require('bnc-sdk')
 const WebSocket = require('ws')
 const { WebSocketServer } = require('ws')
 const Web3 = require('web3')
-// const chalk = require('chalk')
 const fs = require('fs')
 require('dotenv').config();
 const Moralis = require("moralis").default;
 const { EvmChain } = require("@moralisweb3/common-evm-utils");
+const { uuid } = require('uuidv4');
 
 const maintab = require('./routes/api/maintab');
 const mempooltab = require('./routes/api/mempooltab');
 
+var clients = {};
+
+const app = express();
 
 app.use(express.json());
 app.use(cors())
@@ -106,12 +108,13 @@ async function sdkSetup(sdk, configuration) {
 }
   
 async function handleTransactionEvent(transaction) {
+    
     let mempoolData = JSON.parse(fs.readFileSync('./config/mempool/config.json', 'utf-8'));
 
     let tx = transaction.transaction;
     console.log(tx.hash);
-    let chainid
 
+    let chainid
     if(tx.watchedAddress.toLowerCase() == config.UniswapRouter.toLowerCase())   chainid = 'ETH';
     if(tx.watchedAddress.toLowerCase() == config.PancakeswapRouter.toLowerCase())   chainid = 'BNB';
 
@@ -172,27 +175,14 @@ async function handleTransactionEvent(transaction) {
         console.log("Not enough amount")
         return;
     }
-    
-    // var aWss = wss.getWss("/");
-    // aWss.clients.forEach(function (client) {
-    //     var detectObj = {
-    //       token: tokenOut,
-    //       action: "Detected",
-    //       price: price,
-    //       transaction: tx.hash
-    //     };
-    //     var detectInfo = JSON.stringify(detectObj);
-    //     client.send(detectInfo);
-    //     var obj = {
-    //       token: tokenOut,
-    //       action: "Buy",
-    //       price: price,
-    //       transaction: buy_tx.hash
-    //     };
-    //     var updateInfo = JSON.stringify(obj);
-    //     client.send(updateInfo);
-    // });
 
+    // let obj = { text: "time"}
+    // const jsonData = JSON.stringify(obj)
+    // for(let userId in clients) {
+    //     let client = clients[userId]
+    //     if(client.readyState == WebSocket.OPEN)
+    //         client.send(jsonData)
+    // }
     // config = JSON.parse(fs.readFileSync('config.json', 'utf-8'));
 
     // test[tx.hash] = tx;
@@ -216,22 +206,22 @@ const scanMempool = async () => {
     sdkSetup(blocknative, configuration)
 }
 
-// scanMempool()
 
 /*****************************************************************************************************
  * Get the message from the frontend and analyze that, start mempool scan or stop.
  * ***************************************************************************************************/
-app.ws("/connect", function (ws, req) {
-    ws.on("message", async function (msg) {
-      if (msg === "connectRequest") {
-        var obj = {
-          botStatus: botStatus
-        };
-        ws.send(JSON.stringify(obj));
-      } else {
-      }
-    });
+const server = http.createServer();
+const wsServer = new WebSocketServer( {server} )
+server.listen(8007, () => {
+  console.log(`WebSocket server is running on port 8007`);
 });
 
-const port = process.env.PORT || 8008;
+wsServer.on('connection', (connection) => {
+    const userId = uuid();
+    clients[userId] = connection;
+})
+
+scanMempool()
+
+const port = 8008;
 app.listen(port, () => console.log(`Server running on port ${port}`));
