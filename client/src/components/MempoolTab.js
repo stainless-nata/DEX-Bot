@@ -1,6 +1,7 @@
 import { Row, Col, Button, Input, Checkbox, Table, notification } from 'antd';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios'
+import useWebSocket from 'react-use-websocket';
 
 const columns = [
   {
@@ -46,6 +47,14 @@ export default function MempoolTab() {
     const [amount, setAmount] = useState(1000)
     const [isBuy, setIsBuy] = useState(false)
     const [isSell, setIsSell] = useState(false)
+
+    const { lastJsonMessage } = useWebSocket(`ws://${process.env.REACT_APP_BASE_URL}:8007`, {
+        share: true,
+    })
+
+    useEffect(() => {
+        console.log(lastJsonMessage)
+    }, [lastJsonMessage])
     
     return (
         <div>
