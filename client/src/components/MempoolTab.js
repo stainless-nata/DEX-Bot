@@ -28,21 +28,12 @@ const columns = [
   {
     title: 'Maker',
     dataIndex: 'maker',
-    key: 'maker',
+    key: 'maker'
   },
 ];
 
 export default function MempoolTab() {
-    const [data, setData] = useState([
-        {
-          key: '1',
-          time: '14:39:55',
-          type: 'BUY',
-          symbol: 'PEPE',
-          amount: 3941,
-          maker: '0x4ff4c7c8754127cc097910cf9d80400adef5b65d'
-        },
-    ])
+    const [data, setData] = useState([])
     const [pairAddr, setPairAddr] = useState('0xa43fe16908251ee70ef74718545e4fe6c5ccec9f')
     const [amount, setAmount] = useState(1000)
     const [isBuy, setIsBuy] = useState(false)
@@ -53,7 +44,10 @@ export default function MempoolTab() {
     })
 
     useEffect(() => {
-        console.log(lastJsonMessage)
+        let temp = []
+        while(lastJsonMessage && lastJsonMessage.length !== 0)
+            temp.push(lastJsonMessage.pop())
+        setData(temp)
     }, [lastJsonMessage])
     
     return (
@@ -114,27 +108,39 @@ export default function MempoolTab() {
                         }}>SELLS</Checkbox>
                     </Col>
                 </Row>
-                <Button size='large' className='bg-blue-600 text-white' onClick={() => {
-                    axios.post(`http://${process.env.REACT_APP_BASE_URL}:${process.env.REACT_APP_PORT}/mempooltab/set`, {
-                        pairAddr: pairAddr,
-                        filterAmount: amount,
-                        action: isBuy ? isSell? 'All' : 'Buy' : 'Sell'
-                    })
-                    .then((res) => {
-                        if(res.data == 'Success')
-                            notification.success({
-                                message: 'Success!',
-                                placement: 'top',
-                            });
-                        else 
-                            notification.error({
-                                message: 'Failed!',
-                                placement: 'top',
-                            });
-                    });
-                }}>Submit</Button>
+                <Row className='mt-[-50px] justify-center'>
+                    <Button size='large' className='bg-blue-600 text-white' onClick={() => {
+                        axios.post(`http://${process.env.REACT_APP_BASE_URL}:${process.env.REACT_APP_PORT}/mempooltab/set`, {
+                            pairAddr: pairAddr,
+                            filterAmount: amount,
+                            action: isBuy ? isSell? 'All' : 'Buy' : 'Sell'
+                        })
+                        .then((res) => {
+                            if(res.data == 'Success')
+                                notification.success({
+                                    message: 'Success!',
+                                    placement: 'top',
+                                });
+                            else 
+                                notification.error({
+                                    message: 'Failed!',
+                                    placement: 'top',
+                                });
+                        });
+                    }}>Submit</Button>
+                </Row>
             </div>
-            <Table columns={columns} dataSource={data} />
+            <Table 
+                columns={columns} 
+                dataSource={data} 
+                pagination={{
+                  pageSize: 50,
+                }}
+                scroll={{
+                    x: true,
+                    y: 200,
+                }}
+            />
         </div>
     )
 }
