@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
@@ -13,7 +13,8 @@ import HistoryTab from './HistoryTab';
 import MempoolTab from './MempoolTab';
 
 export default function MainPage() {
-  const [value, setValue] = React.useState('1');
+  const [value, setValue] = useState('1');
+
 
   const handleChange = (event, newValue) => {
     setValue(newValue);

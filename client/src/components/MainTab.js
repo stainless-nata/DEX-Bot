@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Input, Button, Row, Col, notification } from 'antd'
 import axios from 'axios'
 
 export default function MainTab() {
+
     const onFinishRegular = (values) => {
       axios.post(`http://${process.env.REACT_APP_BASE_URL}:${process.env.REACT_APP_PORT}/maintab/set_regular_trades`, {
           baseFeePlus:  values.baseFeePlus,
