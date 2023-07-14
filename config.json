@@ -4,14 +4,5 @@
     "WETH": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
     "WBNB": "",
     "ETHDAI": "",
-    "BNBDAI": "",
-    "baseFeePlus": "23",
-    "minerTip": "232",
-    "gasLimit": "111",
-    "baseFeePlusFR": "123",
-    "minerTipFR": "234",
-    "gasLimitFR": "345",
-    "pairAddr": "0xa43fe16908251ee70ef74718545e4fe6c5ccec9f",
-    "filterAmount": 1000,
-    "filter": "Sell"
+    "BNBDAI": ""
 }
