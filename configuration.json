@@ -4,7 +4,7 @@
     "id": "0x7a250d5630b4cf539739df2c5dacb4c659f2488d",
     "filters": [
       {
-        "status": "pending-simulation"
+        "status": "pending"
       }
     ],
     "abi": [
@@ -987,7 +987,7 @@
     "id": "0x10ed43c718714eb63d5aa57b78b54704e256024e",
     "filters": [
       {
-        "status": "pending-simulation"
+        "status": "pending"
       }
     ],
     "type": "account"
