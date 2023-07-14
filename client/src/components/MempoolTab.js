@@ -112,10 +112,16 @@ export default function MempoolTab() {
                         action: isBuy ? isSell? 'All' : 'Buy' : 'Sell'
                     })
                     .then((res) => {
-                        notification.success({
-                            message: 'Success!',
-                            placement: 'top',
-                        });
+                        if(res.data == 'Success')
+                            notification.success({
+                                message: 'Success!',
+                                placement: 'top',
+                            });
+                        else 
+                            notification.error({
+                                message: 'Failed!',
+                                placement: 'top',
+                            });
                     });
                 }}>Submit</Button>
             </div>
