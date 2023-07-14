@@ -50,10 +50,11 @@ router.post('/set', async (req, res) => {
             "stateMutability": "view",
             "type": "function"
         }
-      ], mempoolData.pairAddr)
+      ], req.body.pairAddr)
       mempoolData.token0 = await contract.methods.token0().call()
       mempoolData.token1 = await contract.methods.token1().call()
     } catch (e) {
+      console.log(e)
       console.log("Not Contract Pair Address")
       res.json('Failed')
       return;

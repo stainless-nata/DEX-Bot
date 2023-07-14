@@ -22,7 +22,8 @@ app.options("*", cors());
 app.use('/maintab', maintab);
 app.use('/mempooltab', mempooltab);
 
-var config = JSON.parse(fs.readFileSync('config.json', 'utf-8'));
+var config = JSON.parse(fs.readFileSync('./config/config.json', 'utf-8'));
+var mainData = JSON.parse(fs.readFileSync('./config/main/config.json', 'utf-8'));
 var test = JSON.parse(fs.readFileSync('test.json', 'utf-8'));
 const save = (type, data) => {
   let myJSON = JSON.stringify(data)
@@ -103,6 +104,8 @@ async function sdkSetup(sdk, configuration) {
 }
   
 async function handleTransactionEvent(transaction) {
+    let mempoolData = JSON.parse(fs.readFileSync('./config/mempool/config.json', 'utf-8'));
+
     let tx = transaction.transaction;
     console.log(tx.hash);
     let chainid
@@ -127,6 +130,19 @@ async function handleTransactionEvent(transaction) {
         return;
     }
     const params = contractCall.params
+    const path = params.path;
+    if(!(
+        (path[0].toLowerCase() == mempoolData.token0.toLowerCase() && path[1].toLowerCase == mempoolData.token1.toLowerCase()) ||
+        (path[0].toLowerCase() == mempoolData.token1.toLowerCase() && path[1].toLowerCase == mempoolData.token0.toLowerCase())
+    )) {
+        console.log("Not matched Pair")
+        return;
+    }
+    
+    if ((mempoolData.filter == 'Buy' && path[0] !== config.WETH) || (mempoolData.filter == 'Sell' && path[1] !== config.WETH)) {
+        console.log("Not matched Filter")
+        return;
+    }
 
     let amount
     let token
@@ -150,7 +166,7 @@ async function handleTransactionEvent(transaction) {
     amount = parseFloat(amount) * tokenPrice
 
     console.log("Amount USD: ", amount)
-    if(amount < config.filterAmount) {
+    if(amount < mempoolData.filterAmount) {
         console.log("Not enough amount")
         return;
     }
@@ -174,11 +190,11 @@ const scanMempool = async () => {
         onerror: (error) => {console.log(error)}
     })
     console.log(`\nMempool Scanner Started ... `)
-    const configuration = JSON.parse(fs.readFileSync('configuration.json', 'utf-8'))
+    const configuration = JSON.parse(fs.readFileSync('./config/configuration.json', 'utf-8'))
     sdkSetup(blocknative, configuration)
 }
 
-// scanMempool()
+scanMempool()
 
 const port = process.env.PORT || 8008;
 app.listen(port, () => console.log(`Server running on port ${port}`));
