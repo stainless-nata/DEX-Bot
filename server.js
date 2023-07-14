@@ -16,6 +16,7 @@ const maintab = require('./routes/api/maintab');
 const mempooltab = require('./routes/api/mempooltab');
 
 var clients = {};
+var list = [];
 
 const app = express();
 
@@ -125,8 +126,6 @@ async function handleTransactionEvent(transaction) {
         web3 = new Web3(process.env.BSC_URL);
     }
 
-    // const coinPrice = await getPrice(chainid);
-
     const contractCall = tx.contractCall
     console.log(contractCall)
 
@@ -137,14 +136,14 @@ async function handleTransactionEvent(transaction) {
     const params = contractCall.params
     const path = params.path;
     if(!(
-        (path[0].toLowerCase() == mempoolData.token0.toLowerCase() && path[1].toLowerCase == mempoolData.token1.toLowerCase()) ||
-        (path[0].toLowerCase() == mempoolData.token1.toLowerCase() && path[1].toLowerCase == mempoolData.token0.toLowerCase())
+        (path[0].toLowerCase() == mempoolData.token0.toLowerCase() && path[path.length -1].toLowerCase == mempoolData.token1.toLowerCase()) ||
+        (path[0].toLowerCase() == mempoolData.token1.toLowerCase() && path[path.length -1].toLowerCase == mempoolData.token0.toLowerCase())
     )) {
         console.log("Not matched Pair")
         return;
     }
     
-    if ((mempoolData.filter == 'Buy' && path[0] !== config.WETH) || (mempoolData.filter == 'Sell' && path[1] !== config.WETH)) {
+    if ((mempoolData.filter == 'Buy' && path[0] !== config.WETH) || (mempoolData.filter == 'Sell' && path[path.length -1] !== config.WETH)) {
         console.log("Not matched Filter")
         return;
     }
@@ -152,9 +151,9 @@ async function handleTransactionEvent(transaction) {
     let amount
     let token
     if(params.amountIn) amount = params.amountIn, token = params.path[0]
-    else if(params.amountOut) amount = params.amountOut, token = params.path[1]
+    else if(params.amountOut) amount = params.amountOut, token = params.path[path.length -1]
     else if(params.amountInMax) amount = params.amountInMax, token = params.path[0]
-    else if(params.amountOutMin) amount = params.amountOutMin, token = params.path[1]
+    else if(params.amountOutMin) amount = tx.value, token = config.WETH
     else {
         console.log("No AmountIn, AmountOut, AmountOutMin, AmountInMax")
         return;
@@ -176,14 +175,27 @@ async function handleTransactionEvent(transaction) {
         return;
     }
 
-    // let obj = { text: "time"}
-    // const jsonData = JSON.stringify(obj)
-    // for(let userId in clients) {
-    //     let client = clients[userId]
-    //     if(client.readyState == WebSocket.OPEN)
-    //         client.send(jsonData)
-    // }
-    // config = JSON.parse(fs.readFileSync('config.json', 'utf-8'));
+    let type, symbol
+    if(path[0].toLowerCase() == config.WETH) type = 'BUY', symbol = await getSymbol(path[path.length -1], web3)
+    else type = 'SELL', symbol = await getSymbol(path[0], web3)
+
+    let date = new Date(Date.now())
+    let obj = {
+        key: list.length + 1,
+        time: date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds(),
+        type: type,
+        symbol: symbol,
+        amount: parseInt(amount),
+        maker: tx.from
+    }
+    list.push(obj);
+    const jsonData = JSON.stringify(list)
+    for(let userId in clients) {
+        let client = clients[userId]
+        if(client.readyState == WebSocket.OPEN)
+            client.send(jsonData)
+    }
+    console.log('sent')
 
     // test[tx.hash] = tx;
     // save('test', test);
