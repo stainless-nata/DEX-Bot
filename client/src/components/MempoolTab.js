@@ -34,8 +34,8 @@ const columns = [
 
 export default function MempoolTab() {
     const [data, setData] = useState([])
-    const [pairAddr, setPairAddr] = useState('0xa43fe16908251ee70ef74718545e4fe6c5ccec9f')
-    const [amount, setAmount] = useState(1000)
+    const [pairAddr, setPairAddr] = useState('0x04cf684036cc8030c64735594b8f5c566c3f74b1')
+    const [amount, setAmount] = useState(100)
     const [isBuy, setIsBuy] = useState(false)
     const [isSell, setIsSell] = useState(false)
 
@@ -44,10 +44,21 @@ export default function MempoolTab() {
     })
 
     useEffect(() => {
+        // axios.get(`http://${process.env.REACT_APP_BASE_URL}:${process.env.REACT_APP_PORT}/mempooltab/get`)
+        // .then((res) => {
+        //     console.log(res);
+        //     setData(res.data);
+        // });
+        const temp = window.localStorage.getItem('MEMPOOL_LIST');
+        console.log(temp)
+        if(temp !== null) setData(temp);
+    }, [])
+    useEffect(() => {
         let temp = []
         while(lastJsonMessage && lastJsonMessage.length !== 0)
             temp.push(lastJsonMessage.pop())
         setData(temp)
+        window.localStorage.setItem('MEMPOOL_LIST', JSON.stringify(temp));
     }, [lastJsonMessage])
     
     return (
@@ -63,8 +74,8 @@ export default function MempoolTab() {
                 </Col>
                 <Col>
                     <Button size='large' className='bg-blue-600 text-white ml-10' onClick={() => {
-                        setPairAddr('0xa43fe16908251ee70ef74718545e4fe6c5ccec9f')
-                        setAmount(1000)
+                        setPairAddr('')
+                        setAmount(0)
                         setIsBuy(false)
                         setIsSell(false)
                     }}>Clear Input Fields</Button>
