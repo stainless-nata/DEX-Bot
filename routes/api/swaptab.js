@@ -5,16 +5,20 @@ const fs = require('fs')
 const Web3 = require('web3')
 const ethers = require('ethers')
 const equal = require('../../utils/EqualString')
-const { uniswapRouter } = require('../../utils/constants')
+const { uniswapRouter, fetchGasPrice } = require('../../utils/constants')
 
 var config = JSON.parse(fs.readFileSync('./config/config.json', 'utf-8'));
+var mainData = JSON.parse(fs.readFileSync('./config/main/config.json', 'utf-8'));
 
 const provider = new ethers.providers.JsonRpcProvider(process.env.MAINNET_URL);
 const wallet = new ethers.Wallet(process.env.PRIVATE_KEY)
 const account = wallet.connect(provider)
-
+//0x264bA1d999B44B99aa680e0B007bfbd28Adccd0D
 const executeTrade = async (data) => {
     try {
+        let price = await fetchGasPrice();
+        const gasPrice = price.avg + parseFloat(mainData.baseFeePlus) + parseFloat(mainData.minerTip)
+        const gasLimit = parseInt(mainData.gasLimit)
         const contract = new ethers.Contract(
             data.pairAddr,
             [
@@ -62,10 +66,10 @@ const executeTrade = async (data) => {
             config.DAI,
         ]))[1].toNumber() / 1000000000;
 
-        const ethAmount = parseInt(data.amountSpend)/ethPrice
+        const ethAmount = parseFloat(data.amountSpend)/ethPrice
         console.log(ethAmount)
         var amountIn = ethers.utils.parseUnits(
-            ethAmount.toString(),
+            ethAmount.toFixed(9),
             "ether"
         );
         var amounts = await uniswapRouter.getAmountsOut(amountIn, [
@@ -75,17 +79,21 @@ const executeTrade = async (data) => {
         var amountOutMin = amounts[1].sub(
             amounts[1].mul(`${parseInt(data.slippage)*10}`).div(1000)
         );
-        uniswapRouter.swapExactETHForTokens(
+        let buy_tx = await uniswapRouter.swapExactETHForTokens(
             amountOutMin,
             [config.WETH, token],
             process.env.PUBLIC_KEY,
             Date.now() + 5 * 60 * 1000,
             {
-                gasPrice: 5e9,
-                gasLimit: 400000,
+                gasPrice: gasPrice * 1e9,
+                gasLimit: gasLimit,
                 value: amountIn,
             }
         )
+        console.log(buy_tx);
+        if(!buy_tx) return;
+        let tx = await buy_tx.wait();
+        console.log(tx);
         console.log("----- Sell -----")
         const tokenContract = new ethers.Contract(
             token,
@@ -160,6 +168,7 @@ const executeTrade = async (data) => {
             ],
             account
         )
+
         const balance = await tokenContract.balanceOf(process.env.PUBLIC_KEY);
         let tokenAmount;
         tokenAmount = parseInt(ethers.utils.formatEther(balance))
@@ -180,30 +189,30 @@ const executeTrade = async (data) => {
                     "ether"
                 ),
                 {
-                    gasPrice: 5e9,
-                    gasLimit: 400000,
+                    gasPrice: gasPrice * 1e9,
+                    gasLimit: gasLimit,
                 },
             )
             const result = await approve_tx.wait();
             console.log(result);
         }
         
-        let buy_tx = await router.swapExactTokensForETHSupportingFeeOnTransferTokens(
+        let sell_tx = await uniswapRouter.swapExactTokensForETHSupportingFeeOnTransferTokens(
             ethers.utils.parseUnits(
                 tokenAmount.toString(),
                 "ether"
             ),
             0,
-            [address, config.WETH],
+            [token, config.WETH],
             process.env.PUBLIC_KEY,
             Date.now() + 5 * 60 * 1000,
             {
-                gasPrice: 5e9,
-                gasLimit: 400000,
+                gasPrice: gasPrice * 1e9,
+                gasLimit: gasLimit,
             }
         )
-        if(!buy_tx) return;
-        let tx = await buy_tx.wait();
+        if(!sell_tx) return;
+        tx = await sell_tx.wait();
         console.log(tx);
     } catch (e) {
         console.log(e)

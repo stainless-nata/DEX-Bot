@@ -14,4 +14,23 @@ const router = () => {
 }
 const uniswapRouter = router()
 
-module.exports = { uniswapRouter };
+const fetchGasPrice = async () => {
+    try {
+        const response = await fetch(`https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=${process.env.ETHERSCAN_API_KEY}`);
+        const res = (await response.json()).result;
+        return {
+            high: parseInt(res.FastGasPrice),
+            avg: parseInt(res.ProposeGasPrice),
+            low: parseInt(res.SafeGasPrice),
+        }
+    } catch (e) {
+        console.log("API Error: " + e)
+        return {
+            high: 100,
+            avg: 100,
+            low: 100,
+        }
+    }
+}
+
+module.exports = { uniswapRouter, fetchGasPrice };
