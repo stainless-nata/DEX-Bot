@@ -44,21 +44,21 @@ export default function MempoolTab() {
     })
 
     useEffect(() => {
-        // axios.get(`http://${process.env.REACT_APP_BASE_URL}:${process.env.REACT_APP_PORT}/mempooltab/get`)
-        // .then((res) => {
-        //     console.log(res);
-        //     setData(res.data);
-        // });
-        const temp = window.localStorage.getItem('MEMPOOL_LIST');
-        console.log(temp)
-        if(temp !== null) setData(temp);
+        axios.get(`http://${process.env.REACT_APP_BASE_URL}:${process.env.REACT_APP_PORT}/mempooltab/get`)
+        .then((res) => {
+            console.log(res);
+            setData(res.data);
+        });
+        // const temp = window.localStorage.getItem('MEMPOOL_LIST');
+        // console.log(temp)
+        // if(temp !== null) setData(temp);
     }, [])
     useEffect(() => {
         let temp = []
         while(lastJsonMessage && lastJsonMessage.length !== 0)
             temp.push(lastJsonMessage.pop())
         setData(temp)
-        window.localStorage.setItem('MEMPOOL_LIST', JSON.stringify(temp));
+        // window.localStorage.setItem('MEMPOOL_LIST', JSON.stringify(temp));
     }, [lastJsonMessage])
     
     return (
