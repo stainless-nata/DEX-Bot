@@ -292,5 +292,9 @@ router.post('/set', async (req, res) => {
     res.json('Success');
 });
 
+router.get('/get', async (req, res) => {
+    res.json(JSON.stringify(list))
+})
+
 
 module.exports = router;
