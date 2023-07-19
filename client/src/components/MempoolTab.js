@@ -46,8 +46,7 @@ export default function MempoolTab() {
     useEffect(() => {
         axios.get(`http://${process.env.REACT_APP_BASE_URL}:${process.env.REACT_APP_PORT}/mempooltab/get`)
         .then((res) => {
-            console.log(res);
-            setData(res.data);
+            setData(JSON.parse(res.data));
         });
         // const temp = window.localStorage.getItem('MEMPOOL_LIST');
         // console.log(temp)
