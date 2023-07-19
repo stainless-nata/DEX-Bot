@@ -157,10 +157,10 @@ async function handleTransactionEvent(transaction) {
     amount = parseFloat(amount) * tokenPrice
 
     console.log("Amount USD: ", amount)
-    // if(amount < mempoolData.filterAmount) {
-    //     console.log("Not enough amount")
-    //     return;
-    // }
+    if(amount < mempoolData.filterAmount) {
+        console.log("Not enough amount")
+        return;
+    }
 
     let type, symbol
     if(path[0].toLowerCase() == config.WETH) type = 'BUY', symbol = await getSymbol(path[path.length -1], web3)
