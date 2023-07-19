@@ -8,6 +8,7 @@ const { uuid } = require('uuidv4');
 
 const maintab = require('./routes/api/maintab');
 const mempooltab = require('./routes/api/mempooltab');
+const swaptab = require('./routes/api/swaptab');
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.options("*", cors());
 
 app.use('/maintab', maintab);
 app.use('/mempooltab', mempooltab);
+app.use('/swaptab', swaptab);
 
 global.clients = {}
 
