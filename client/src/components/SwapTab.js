@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Button, Checkbox, Form, Input, Col, Row } from 'antd';
+import { Button, Checkbox, Form, Input, Col, Row, notification } from 'antd';
+import axios from 'axios'
 
 export default function SwapTab() {
 
@@ -8,7 +9,30 @@ export default function SwapTab() {
     const [pairSlippage, setPairSlippage] = useState(0);
 
     const onFinish = (values) => {
-      console.log('Success:', values);
+        console.log('Success:', values);
+        axios.post(`http://${process.env.REACT_APP_BASE_URL}:${process.env.REACT_APP_PORT}/swaptab/set`, {
+            amountSpend: values.amountSpend,
+            frAmount: values.frAmount,
+            pairAddr: values.pairAddr,
+            pairSlippage: values.pairSlippage,
+            sl: values.sl,
+            slippage: values.slippage,
+            tokenPrice: values.tokenPrice,
+            tp: values.tp,
+            tsl: values.tsl,
+        })
+        .then((res) => {
+            if(res.data == 'Success')
+                notification.success({
+                    message: 'Success!',
+                    placement: 'top',
+                });
+            else 
+                notification.error({
+                    message: 'Failed!',
+                    placement: 'top',
+                });
+        });
     };
 
     const onFinishFailed = (errorInfo) => {
@@ -41,7 +65,7 @@ export default function SwapTab() {
                         rules={[
                             {
                             required: true,
-                            message: 'Please input your username!',
+                            message: 'Please input Contract Pair!',
                             },
                         ]}
                         >
@@ -54,7 +78,7 @@ export default function SwapTab() {
                         rules={[
                             {
                             required: true,
-                            message: 'Please input your password!',
+                            message: 'Please input amount!',
                             },
                         ]}
                         >
@@ -67,7 +91,7 @@ export default function SwapTab() {
                         rules={[
                             {
                             required: true,
-                            message: 'Please input your password!',
+                            message: 'Please input slippage!',
                             },
                         ]}
                         >
@@ -75,19 +99,19 @@ export default function SwapTab() {
                         </Form.Item>
                     </div>
                     <div className='ml-20 mr-20'>
-                        <Form.Item label="" name="pairAddr" className='border border-blue-600 rounded'>
+                        <Form.Item label="" name="basePrice" className='border border-blue-600 rounded'>
                             <p className='text-lg'>Current Base Price = <span className='text-blue-600'>${basePrice}</span></p>
                         </Form.Item>
-                        <Form.Item label="" name="pairAddr" className='border border-blue-600 rounded'>
+                        <Form.Item label="" name="tokenPrice" className='border border-blue-600 rounded'>
                             <p className='text-lg'>Current Token Price = <span className='text-blue-600'>${tokenPrice}</span></p>
                         </Form.Item>
-                        <Form.Item label="" name="pairAddr" className='border border-blue-600 rounded'>
+                        <Form.Item label="" name="pairSlippage" className='border border-blue-600 rounded'>
                             <p className='text-lg'>Current Pair Slippage = <span className='text-blue-600'>{pairSlippage}%</span></p>
                         </Form.Item>
                     </div>
                 </div>
                 <div className='mt-10'>
-                    <Form.Item label="" name="pairAddr">
+                    <Form.Item label="" name="frAmount">
                         <Row>
                             <Col span={1} className='mt-1'>
                                 <Checkbox onChange={() => {}} className='align-middle'/>
@@ -100,7 +124,7 @@ export default function SwapTab() {
                             </Col>
                         </Row>
                     </Form.Item>
-                    <Form.Item label="" name="pairAddr">
+                    <Form.Item label="" name="sl">
                         <Row>
                             <Col span={1} className='mt-1'>
                                 <Checkbox onChange={() => {}} className='align-middle'/>
@@ -113,7 +137,7 @@ export default function SwapTab() {
                             </Col>
                         </Row>
                     </Form.Item>
-                    <Form.Item label="" name="pairAddr">
+                    <Form.Item label="" name="tsl">
                         <Row>
                             <Col span={1} className='mt-1'>
                                 <Checkbox onChange={() => {}} className='align-middle'/>
@@ -126,7 +150,7 @@ export default function SwapTab() {
                             </Col>
                         </Row>
                     </Form.Item>
-                    <Form.Item label="" name="pairAddr">
+                    <Form.Item label="" name="tp">
                         <Row>
                             <Col span={1} className='mt-1'>
                                 <Checkbox onChange={() => {}} className='align-middle'/>
@@ -140,7 +164,7 @@ export default function SwapTab() {
                         </Row>
                     </Form.Item>
                 </div>
-                <Button type='primary' size='large' className='bg-blue-600 mt-12 w-60'>Submit</Button>
+                <Button type='primary' htmlType='submit' size='large' className='bg-blue-600 mt-12 w-60'>Submit</Button>
             </Form>
         </div>
     )

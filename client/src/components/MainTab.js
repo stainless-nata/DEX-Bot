@@ -37,7 +37,7 @@ export default function MainTab() {
     return (
         <div className='text-left'>
             <Form
-                name="basic"
+                name="regular"
                 labelCol={{
                 span: 10,
                 }}
@@ -99,7 +99,7 @@ export default function MainTab() {
                 </Row>
             </Form>
             <Form
-                name="basic"
+                name="frontrun"
                 labelCol={{
                 span: 10,
                 }}
