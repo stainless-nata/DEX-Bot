@@ -97,7 +97,7 @@ async function sdkSetup(sdk, configuration) {
       sdk.configuration({...abiObj, filters, scope: id, watchAddress: true})
     })
 }
-  
+
 async function handleTransactionEvent(transaction) {
     let tx = transaction.transaction;
     console.log(tx.hash);
