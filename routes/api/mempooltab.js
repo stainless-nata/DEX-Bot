@@ -279,6 +279,7 @@ router.post('/set', async (req, res) => {
         "swapTokensForExactETH",
       ]
       configuration[i].filters[1]["contractCall.params.path"] = equal(mempoolData.token0, config.WETH) ? mempoolData.token0 : mempoolData.token1
+      console.log(equal(mempoolData.token0, config.WETH) ? mempoolData.token0 : mempoolData.token1)
     }
 
     if(isRunning)
